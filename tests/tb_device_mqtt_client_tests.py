@@ -1,13 +1,13 @@
 import unittest
 from time import sleep
 
-from tb_device_mqtt import TBDeviceMqttClient
+from ticos_device_mqtt import TicosDeviceMqttClient
 
 
-class TBDeviceMqttClientTests(unittest.TestCase):
+class TicosDeviceMqttClientTests(unittest.TestCase):
     """
     Before running tests, do the next steps:
-    1. Create device "Example Name" in ThingsBoard
+    1. Create device "Example Name" in Ticos
     2. Add shared attribute "attr" with value "hello" to created device
     3. Add client attribute "atr3" with value "value3" to created device
     """
@@ -26,7 +26,7 @@ class TBDeviceMqttClientTests(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.client = TBDeviceMqttClient('127.0.0.1', 1883, 'TEST_DEVICE_TOKEN')
+        cls.client = TicosDeviceMqttClient('127.0.0.1', 1883, 'TEST_DEVICE_TOKEN')
         cls.client.connect(timeout=1)
 
     @classmethod
@@ -36,17 +36,17 @@ class TBDeviceMqttClientTests(unittest.TestCase):
     @staticmethod
     def on_attributes_change_callback(result, exception=None):
         if exception is not None:
-            TBDeviceMqttClientTests.request_attributes_result = exception
+            TicosDeviceMqttClientTests.request_attributes_result = exception
         else:
-            TBDeviceMqttClientTests.request_attributes_result = result
+            TicosDeviceMqttClientTests.request_attributes_result = result
 
     @staticmethod
     def callback_for_specific_attr(result, *args):
-        TBDeviceMqttClientTests.subscribe_to_attribute = result
+        TicosDeviceMqttClientTests.subscribe_to_attribute = result
 
     @staticmethod
     def callback_for_everything(result, *args):
-        TBDeviceMqttClientTests.subscribe_to_attribute_all = result
+        TicosDeviceMqttClientTests.subscribe_to_attribute_all = result
 
     def test_request_attributes(self):
         self.client.request_attributes(shared_keys=[self.shared_attribute_name],
@@ -83,4 +83,4 @@ class TBDeviceMqttClientTests(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main('tb_device_mqtt_client_tests')
+    unittest.main('ticos_device_mqtt_client_tests')

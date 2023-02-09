@@ -1,4 +1,4 @@
-#      Copyright 2020. ThingsBoard
+#      Copyright 2020. Ticos
 #  #
 #      Licensed under the Apache License, Version 2.0 (the "License");
 #      you may not use this file except in compliance with the License.
@@ -57,11 +57,11 @@ RESULT_CODES = {
 }
 
 
-class TBTimeoutException(Exception):
+class TicosTimeoutException(Exception):
     pass
 
 
-class TBQoSException(Exception):
+class TicosQoSException(Exception):
     pass
 
 
@@ -80,17 +80,17 @@ class ProvisionClient(paho.Client):
 
     def __on_connect(self, client, _, __, rc):  # Callback for connect
         if rc == 0:
-            log.info("[Provisioning client] Connected to ThingsBoard ")
+            log.info("[Provisioning client] Connected to Ticos ")
             client.subscribe(self.PROVISION_RESPONSE_TOPIC)  # Subscribe to provisioning response topic
             provision_request = dumps(self.__provision_request)
             log.info("[Provisioning client] Sending provisioning request %s" % provision_request)
             client.publish(self.PROVISION_REQUEST_TOPIC, provision_request)  # Publishing provisioning request topic
         else:
-            log.info("[Provisioning client] Cannot connect to ThingsBoard!, result: %s" % RESULT_CODES[rc])
+            log.info("[Provisioning client] Cannot connect to Ticos!, result: %s" % RESULT_CODES[rc])
 
     def __on_message(self, _, __, msg):
         decoded_payload = msg.payload.decode("UTF-8")
-        log.info("[Provisioning client] Received data from ThingsBoard: %s" % decoded_payload)
+        log.info("[Provisioning client] Received data from Ticos: %s" % decoded_payload)
         decoded_message = loads(decoded_payload)
         provision_device_status = decoded_message.get("status")
         if provision_device_status == "SUCCESS":
@@ -101,7 +101,7 @@ class ProvisionClient(paho.Client):
         self.disconnect()
 
     def provision(self):
-        log.info("[Provisioning client] Connecting to ThingsBoard")
+        log.info("[Provisioning client] Connecting to Ticos")
         self.__credentials = None
         self.connect(self._host, self._port, 60)
         self.loop_forever()
@@ -110,24 +110,24 @@ class ProvisionClient(paho.Client):
         return self.__credentials
 
 
-class TBPublishInfo:
-    TB_ERR_AGAIN = -1
-    TB_ERR_SUCCESS = 0
-    TB_ERR_NOMEM = 1
-    TB_ERR_PROTOCOL = 2
-    TB_ERR_INVAL = 3
-    TB_ERR_NO_CONN = 4
-    TB_ERR_CONN_REFUSED = 5
-    TB_ERR_NOT_FOUND = 6
-    TB_ERR_CONN_LOST = 7
-    TB_ERR_TLS = 8
-    TB_ERR_PAYLOAD_SIZE = 9
-    TB_ERR_NOT_SUPPORTED = 10
-    TB_ERR_AUTH = 11
-    TB_ERR_ACL_DENIED = 12
-    TB_ERR_UNKNOWN = 13
-    TB_ERR_ERRNO = 14
-    TB_ERR_QUEUE_SIZE = 15
+class TicosPublishInfo:
+    TICOS_ERR_AGAIN = -1
+    TICOS_ERR_SUCCESS = 0
+    TICOS_ERR_NOMEM = 1
+    TICOS_ERR_PROTOCOL = 2
+    TICOS_ERR_INVAL = 3
+    TICOS_ERR_NO_CONN = 4
+    TICOS_ERR_CONN_REFUSED = 5
+    TICOS_ERR_NOT_FOUND = 6
+    TICOS_ERR_CONN_LOST = 7
+    TICOS_ERR_TLS = 8
+    TICOS_ERR_PAYLOAD_SIZE = 9
+    TICOS_ERR_NOT_SUPPORTED = 10
+    TICOS_ERR_AUTH = 11
+    TICOS_ERR_ACL_DENIED = 12
+    TICOS_ERR_UNKNOWN = 13
+    TICOS_ERR_ERRNO = 14
+    TICOS_ERR_QUEUE_SIZE = 15
 
     def __init__(self, message_info):
         self.message_info = message_info
@@ -144,7 +144,7 @@ class TBPublishInfo:
         return self.message_info.rc
 
 
-class TBDeviceMqttClient:
+class TicosDeviceMqttClient:
     def __init__(self, host, port=1883, username=None, password=None, quality_of_service=None, client_id="",
                  chunk_size=0):
         self._client = paho.Client(protocol=4, client_id=client_id)
@@ -197,7 +197,7 @@ class TBDeviceMqttClient:
     #     pass
 
     def _on_publish(self, client, userdata, result):
-        # log.debug("Data published to ThingsBoard!")
+        # log.debug("Data published to Ticos!")
         pass
 
     def _on_disconnect(self, client, userdata, result_code):
@@ -260,7 +260,7 @@ class TBDeviceMqttClient:
     def disconnect(self):
         self._client.disconnect()
         log.debug(self._client)
-        log.debug("Disconnecting from ThingsBoard")
+        log.debug("Disconnecting from Ticos")
         self.__is_connected = False
         self._client.loop_stop()
 
@@ -460,8 +460,8 @@ class TBDeviceMqttClient:
             qos = self.quality_of_service
         if qos not in (0, 1):
             log.exception("Quality of service (qos) value must be 0 or 1")
-            raise TBQoSException("Quality of service (qos) value must be 0 or 1")
-        return TBPublishInfo(self._client.publish(topic, data, qos))
+            raise TicosQoSException("Quality of service (qos) value must be 0 or 1")
+        return TicosPublishInfo(self._client.publish(topic, data, qos))
 
     def send_telemetry(self, telemetry, quality_of_service=None):
         quality_of_service = quality_of_service if quality_of_service is not None else self.quality_of_service
@@ -555,10 +555,10 @@ class TBDeviceMqttClient:
                                 callback = self.__device_client_rpc_dict.pop(item["rpc_request_id"])
                     if callback is not None:
                         if isinstance(callback, tuple):
-                            callback[0](None, TBTimeoutException("Timeout while waiting for a reply from ThingsBoard!"),
+                            callback[0](None, TicosTimeoutException("Timeout while waiting for a reply from Ticos!"),
                                         callback[1])
                         else:
-                            callback(None, TBTimeoutException("Timeout while waiting for a reply from ThingsBoard!"))
+                            callback(None, TicosTimeoutException("Timeout while waiting for a reply from Ticos!"))
             else:
                 time.sleep(0.2)
 
@@ -567,7 +567,7 @@ class TBDeviceMqttClient:
             "secretKey": secret_key,
             "durationMs": duration
         }
-        info = TBPublishInfo(self._client.publish(CLAIMING_TOPIC, dumps(claiming_request), qos=self.quality_of_service))
+        info = TicosPublishInfo(self._client.publish(CLAIMING_TOPIC, dumps(claiming_request), qos=self.quality_of_service))
         return info
 
     @staticmethod

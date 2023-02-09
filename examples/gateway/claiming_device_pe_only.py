@@ -1,4 +1,4 @@
-#      Copyright 2020. ThingsBoard
+#      Copyright 2020. Ticos
 #  #
 #      Licensed under the Apache License, Version 2.0 (the "License");
 #      you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 
 import logging
 
-from tb_gateway_mqtt import TBGatewayMqttClient
+from ticos_gateway_mqtt import TicosGatewayMqttClient
 logging.basicConfig(level=logging.DEBUG)
 
 THINGSBOARD_HOST = "127.0.0.1"
@@ -27,7 +27,7 @@ DURATION = 30000  # In milliseconds (30 seconds)
 
 
 def main():
-    client = TBGatewayMqttClient(THINGSBOARD_HOST, 1883, GATEWAY_ACCESS_TOKEN)
+    client = TicosGatewayMqttClient(THINGSBOARD_HOST, 1883, GATEWAY_ACCESS_TOKEN)
     client.connect()
 
     """

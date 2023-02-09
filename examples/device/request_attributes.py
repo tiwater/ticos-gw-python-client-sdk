@@ -1,4 +1,4 @@
-#      Copyright 2020. ThingsBoard
+#      Copyright 2020. Ticos
 #  #
 #      Licensed under the Apache License, Version 2.0 (the "License");
 #      you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 import logging
 import time
 
-from tb_device_mqtt import TBDeviceMqttClient
+from ticos_device_mqtt import TicosDeviceMqttClient
 logging.basicConfig(level=logging.DEBUG)
 
 
@@ -28,7 +28,7 @@ def on_attributes_change(result, exception=None):
 
 
 def main():
-    client = TBDeviceMqttClient("127.0.0.1", 1883, "A2_TEST_TOKEN")
+    client = TicosDeviceMqttClient("127.0.0.1", 1883, "A2_TEST_TOKEN")
     client.connect()
     client.request_attributes(["atr1", "atr2"], callback=on_attributes_change)
     while not client.stopped:

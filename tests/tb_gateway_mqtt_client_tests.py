@@ -1,13 +1,13 @@
 import unittest
 from time import sleep, time
 
-from tb_gateway_mqtt import TBGatewayMqttClient
+from ticos_gateway_mqtt import TicosGatewayMqttClient
 
 
-class TBGatewayMqttClientTests(unittest.TestCase):
+class TicosGatewayMqttClientTests(unittest.TestCase):
     """
     Before running tests, do the next steps:
-    1. Create device "Example Name" in ThingsBoard
+    1. Create device "Example Name" in Ticos
     2. Add shared attribute "attr" with value "hello" to created device
     """
 
@@ -24,7 +24,7 @@ class TBGatewayMqttClientTests(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.client = TBGatewayMqttClient('127.0.0.1', 1883, 'TEST_GATEWAY_TOKEN')
+        cls.client = TicosGatewayMqttClient('127.0.0.1', 1883, 'TEST_GATEWAY_TOKEN')
         cls.client.connect(timeout=1)
 
     @classmethod
@@ -34,21 +34,21 @@ class TBGatewayMqttClientTests(unittest.TestCase):
     @staticmethod
     def request_attributes_callback(result, exception=None):
         if exception is not None:
-            TBGatewayMqttClientTests.request_attributes_result = exception
+            TicosGatewayMqttClientTests.request_attributes_result = exception
         else:
-            TBGatewayMqttClientTests.request_attributes_result = result
+            TicosGatewayMqttClientTests.request_attributes_result = result
 
     @staticmethod
     def callback(result):
-        TBGatewayMqttClientTests.subscribe_to_device_attribute_all = result
+        TicosGatewayMqttClientTests.subscribe_to_device_attribute_all = result
 
     @staticmethod
     def callback_for_everything(result):
-        TBGatewayMqttClientTests.subscribe_to_attribute_all = result
+        TicosGatewayMqttClientTests.subscribe_to_attribute_all = result
 
     @staticmethod
     def callback_for_specific_attr(result):
-        TBGatewayMqttClientTests.subscribe_to_attribute = result
+        TicosGatewayMqttClientTests.subscribe_to_attribute = result
 
     def test_connect_disconnect_device(self):
         self.assertEqual(self.client.gw_connect_device(self.device_name).rc, 0)
@@ -88,4 +88,4 @@ class TBGatewayMqttClientTests(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main('tb_gateway_mqtt_client_tests')
+    unittest.main('ticos_gateway_mqtt_client_tests')

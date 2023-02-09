@@ -1,4 +1,4 @@
-#      Copyright 2020. ThingsBoard
+#      Copyright 2020. Ticos
 #  #
 #      Licensed under the Apache License, Version 2.0 (the "License");
 #      you may not use this file except in compliance with the License.
@@ -14,12 +14,12 @@
 #
 
 import logging
-from tb_device_mqtt import TBDeviceMqttClient
+from ticos_device_mqtt import TicosDeviceMqttClient
 import socket
 
 logging.basicConfig(level=logging.DEBUG)
 # connecting to localhost
-client = TBDeviceMqttClient(socket.gethostname(), 1883, "A2_TEST_TOKEN")
+client = TicosDeviceMqttClient(socket.gethostname(), 1883, "A2_TEST_TOKEN")
 client.connect(tls=True,
                ca_certs="mqttserver.pub.pem",
                cert_file="mqttclient.nopass.pem")
