@@ -1,4 +1,4 @@
-#      Copyright 2020. ThingsBoard
+#      Copyright 2020. Ticos
 #  #
 #      Licensed under the Apache License, Version 2.0 (the "License");
 #      you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 import logging
 import time
 from simplejson import dumps
-from tb_device_mqtt import TBDeviceMqttClient
+from ticos_device_mqtt import TicosDeviceMqttClient
 
 GATEWAY_ATTRIBUTES_TOPIC = "v1/gateway/attributes"
 GATEWAY_ATTRIBUTES_REQUEST_TOPIC = "v1/gateway/attributes/request"
@@ -27,14 +27,14 @@ GATEWAY_RPC_TOPIC = "v1/gateway/rpc"
 GATEWAY_RPC_RESPONSE_TOPIC = "v1/gateway/rpc/response"
 GATEWAY_CLAIMING_TOPIC = "v1/gateway/claim"
 
-log = logging.getLogger("tb_connection")
+log = logging.getLogger("ticos_connection")
 
 
-class TBGatewayAPI:
+class TicosGatewayAPI:
     pass
 
 
-class TBGatewayMqttClient(TBDeviceMqttClient):
+class TicosGatewayMqttClient(TicosDeviceMqttClient):
     def __init__(self, host, port, username=None, password=None, gateway=None, quality_of_service=1, client_id=""):
         super().__init__(host, port, username, password, quality_of_service, client_id)
         self.quality_of_service = quality_of_service
@@ -92,7 +92,7 @@ class TBGatewayMqttClient(TBDeviceMqttClient):
                     else:
                         callback(content, None)
                 else:
-                    log.error("Unable to find callback to process attributes response from TB")
+                    log.error("Unable to find callback to process attributes response from Ticos")
         elif message.topic == GATEWAY_ATTRIBUTES_TOPIC:
             with self._lock:
                 # callbacks for everything

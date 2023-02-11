@@ -1,4 +1,4 @@
-#      Copyright 2020. ThingsBoard
+#      Copyright 2020. Ticos
 #  #
 #      Licensed under the Apache License, Version 2.0 (the "License");
 #      you may not use this file except in compliance with the License.
@@ -26,15 +26,15 @@ VERSION = "1.4"
 
 setup(
     version=VERSION,
-    name="tb-mqtt-client",
-    author="ThingsBoard",
-    author_email="info@thingsboard.io",
+    name="ticos-mqtt-client",
+    author="Ticos",
+    author_email="info@ticos.io",
     license="Apache Software License (Apache Software License 2.0)",
-    description="ThingsBoard python client SDK",
-    url="https://github.com/thingsboard/thingsboard-python-client-sdk",
+    description="Ticos python client SDK",
+    url="https://github.com/tiwater/ticos-gw-python-client-sdk",
     long_description=long_description,
     long_description_content_type="text/markdown",
     python_requires=">=3.7",
     packages=["."],
     install_requires=['paho-mqtt>=1.6', 'requests', 'mmh3', 'simplejson'],
-    download_url='https://github.com/thingsboard/thingsboard-python-client-sdk/archive/%s.tar.gz' % VERSION)
+    download_url='https://github.com/tiwater/ticos-gw-python-client-sdk/archive/%s.tar.gz' % VERSION)
